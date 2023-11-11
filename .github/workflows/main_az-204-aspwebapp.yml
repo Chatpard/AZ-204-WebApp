@@ -22,7 +22,7 @@ jobs:
           dotnet-version: '7.0.x'
 
       - name: Build with dotnet
-        run: dotnet build {DOTNET_ROOT}/AZ-204-WebApp --configuration Release
+        run: dotnet build AZ-204-WebApp.sln --configuration Release
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp

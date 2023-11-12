@@ -53,10 +53,10 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Build with dotnet
-        run: dotnet build ./AZ-204-WebApp/AZ-204-WebApp/AZ-204-WebApp.csproj --configuration Release
+        run: dotnet build ./AZ-204-WebApp/AZ-204-WebApp.sln --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish ./AZ-204-WebApp/AZ-204-WebApp/AZ-204-WebApp.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish ./AZ-204-WebApp/AZ-204-WebApp.sln -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -65,12 +65,10 @@ jobs:
           path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
-    permissions:
-      contents: none
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     environment:
-      name: 'Development'
+      name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -83,6 +81,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          app-name: ${{ AZURE_WEBAPP_NAME }}
+          slot-name: 'Production'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          package: ${{ AZURE_WEBAPP_PACKAGE_PATH }}

@@ -45,7 +45,7 @@ jobs:
         run: dotnet build ./AZ-204-WebApp/AZ-204-WebApp.sln --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish ./AZ-204-WebApp/AZ-204-WebApp.sln -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish ./AZ-204-WebApp/AZ-204-WebApp.sln -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
